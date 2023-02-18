@@ -1,87 +1,41 @@
+using advs_asp;
 using advs_backend;
 using advs_backend.JSON;
 using Newtonsoft.Json;
-using System.Reflection.PortableExecutable;
 using System.Text;
-using System.Text.RegularExpressions;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.Run(async context =>
+app.UseMiddleware<CORS_Middleware>();
+
+app.Map("/advs/{id:int}", (int id) => Database.GetAdv(id));
+app.MapPost("/advs/new", async (context) =>
 {
     var Request = context.Request;
     var Response = context.Response;
-    var connection = context.Connection;
-    var path = Request.Path;
 
-    string log = connection.RemoteIpAddress + ":" + connection.RemotePort + ": " + path;
+    string bodyStr = await BodyToString(Request);
 
-    Response.Headers["Access-Control-Allow-Origin"] = "*";
+    NewAdvJSON adv = JsonConvert.DeserializeObject<NewAdvJSON>(bodyStr);
 
-    string result;
-
-    if (path == "/advs")
-    {
-        result = Database.Connection();
-        Response.Headers.ContentType = "application/json; charset=utf-8";
-    }
-    else if (path == "/advs/new" && Request.Method == "POST")
-    {
-        string bodyStr = await BodyToString(Request);
-        log += " " + bodyStr;
-
-        NewAdvJSON adv = JsonConvert.DeserializeObject<NewAdvJSON>(bodyStr);
-        result = Database.AddAdv(adv);
-        Response.Headers.ContentType = "application/json; charset=utf-8";
-    }
-    else if (Regex.IsMatch(path, "^/advs/([0-9]+)$"))
-    {
-        try
-        {
-            //Console.WriteLine(path);
-            string[] parsedURI = path.ToString().Split('/');
-
-            //foreach (string str in parsedURI) {
-            //    Console.WriteLine(str);
-            //}
-            //Console.WriteLine(parsedURI[2]);
-
-            if (parsedURI.Length > 3) throw new Exception();
-            int ID = Int32.Parse(parsedURI[2]);
-
-            result = Database.GetAdv(ID);
-        }
-        catch(Exception e)
-        {
-            log += " " + e;
-            result = "Not found";
-            Response.StatusCode = 404;
-        }
-    } 
-    else if (path == "/login" && Request.Method == "POST")
-    {
-        try
-        {
-            string bodyStr = await BodyToString(Request);
-            log += " " + bodyStr;
-            result = Database.Login(bodyStr);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            result = "Not found";
-            Response.StatusCode = 404;
-        }
-    }
-    else
-    {
-        result = "Not found";
-        Response.StatusCode= 404;
-    }
+    Response.Headers.ContentType = "application/json; charset=utf-8";
+    string result = Database.AddAdv(adv);
+    Console.WriteLine(result);
 
     await Response.WriteAsync(result);
-    Console.WriteLine(log + " " + result);
+});
+app.Map("/advs", () => Database.Connection());
+app.MapPost("/login", async (context) =>
+{
+    var Request = context.Request;
+    var Response = context.Response;
+
+    string bodyStr = await BodyToString(Request);
+    string result = Database.Login(bodyStr);
+    Console.WriteLine(result);
+
+    await Response.WriteAsync(result);
 });
 
 app.Run();
