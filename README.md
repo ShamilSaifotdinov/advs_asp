@@ -1,6 +1,6 @@
-# advs-old
+# advs
 ИС "Объекты" - каркас WEB-приложение по продажи недвижимости.
 
 Full-stack приложение:
 * Frontend: React
-* Backend: C# + PostgreSQL
+* Backend: C# (ASP.NET) + PostgreSQL
