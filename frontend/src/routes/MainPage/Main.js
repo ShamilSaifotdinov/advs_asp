@@ -1,6 +1,6 @@
 import React from "react";
 // import useQuery from "../hooks/hook.http";
-import Adv from "./Adv"
+import Adv from "../Adv"
 
 class Main extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class Main extends React.Component {
           <h1>Объявления</h1>
           {this.state.loading
             ? <h2>Loading...</h2>
-            : this.state.advs.map(adv => <Adv key={adv.ID} {...adv} />)
+            : this.state.advs.map(adv => <Adv key={adv.advId} {...adv} />)
           }
         </div>
       </div>

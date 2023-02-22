@@ -11,19 +11,25 @@ export default function useQuery() {
         setLoading(true)
 
         try {
-          const response = await fetch(`http://${window.location.hostname}:8080${url}`, { method, body, headers })
-          if (!response.ok) {
-            throw new Error ("Ошибка")
+          var response;
+          if (method === "GET") {
+            console.log(`${method} ${body} ${headers}`)
+            response = await fetch(`http://${window.location.hostname}:8080${url}`, { method, headers })
           }
+          else {
+            response = await fetch(`http://${window.location.hostname}:8080${url}`, { method, body, headers })
+          }
+          const data = await response.json()
+          console.log(data)
 
-          const data = response.json()
+          if (!response.ok) throw new Error(data.message)
 
           setLoading(false)
 
           return data
         }
-        catch (e) {          
-          setError(e)
+        catch (e) {
+          setError(e.message)
           setLoading(false)
         }
     }

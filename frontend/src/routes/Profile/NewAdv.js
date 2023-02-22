@@ -1,5 +1,5 @@
 import { useState } from "react"
-import useQuery from "../hooks/hook.http"
+import useQuery from "../../hooks/hook.http"
 import { useNavigate } from "react-router-dom"
 
 
@@ -18,13 +18,16 @@ export default function NewAdv() {
     const sendNewAdv = async (event, form) => {
         console.log(form)
         event.preventDefault()
-        const res = await http("/advs/new", "POST", JSON.stringify(form))
+        const res = await http("/advs/new", "POST", JSON.stringify(form), {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + sessionStorage.getItem('token')  // передача токена в заголовке
+        })
         if (errorState) {            
             console.error(errorState.message)
             alert(errorState.message)
         } else {
             console.log(res)
-            navigate("/objects/" + res.ID)
+            navigate("/objects/" + res.advId)
         }
     }
 

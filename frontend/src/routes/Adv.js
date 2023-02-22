@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom"
+//import { Link } from "react-router-dom"
 
-function Adv({ID, Name, Location, Discription, Price}) {
+function Adv({advId, name, location, discription, price}) {
     return (
         <div className="adv">
-            <Link to={"objects/" + ID} target="_blank" ><h1>{Name}</h1></Link>
-            <p>{Location}</p>
-            <p>{Discription}</p>
-            <h2>{Price.toFixed(2)} руб.</h2>
+            <a href={"/objects/" + advId} target="_blank" ><h1>{name}</h1></a>
+            <p>{location}</p>
+            <p>{discription}</p>
+            <h2>{price.toFixed(2)} руб.</h2>
         </div>
     )
         

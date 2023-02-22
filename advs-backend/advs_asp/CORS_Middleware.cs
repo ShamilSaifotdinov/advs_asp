@@ -10,7 +10,10 @@
         public async Task InvokeAsync(HttpContext context)
         {
             context.Response.Headers["Access-Control-Allow-Origin"] = "*";
+            context.Response.Headers["Access-Control-Allow-Headers"] = "*";
+            context.Response.Headers["Access-Control-Allow-Methods"] = "*"; 
             await next.Invoke(context);
+            Console.WriteLine(context.Response.StatusCode);
         }
     }
 }

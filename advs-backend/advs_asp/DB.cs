@@ -46,7 +46,6 @@ namespace advs_backend
                 return JsonConvert.SerializeObject(advJSON);
             }
         }
-
         static public string AddAdv(NewAdvJSON adv)
         {
             using (AdvsContext db = new())
@@ -73,7 +72,7 @@ namespace advs_backend
                 return JsonConvert.SerializeObject(advJSON);
             }
         }
-        static public string Login(string strUser)
+        static public User? Login(string strUser)
         {
             using (AdvsContext db = new())
             {
@@ -81,25 +80,26 @@ namespace advs_backend
                 var user = (from Users in db.Users
                             where Users.Email == userJSON.Email
                             select Users).FirstOrDefault();
-                Result result;
+                return user;
+                //Result result;
 
-                if (user != null && userJSON.Password == user.Password)
-                {
-                    Console.WriteLine("User: " + "\n\tID: " + user.UserId + "\n\tEmail: " + user.Email);
-                    result = new()
-                    {
-                        Message = "Authenticated"
-                    };
-                }
-                else
-                {
-                    result = new()
-                    {
-                        Message = "Неверный логин или пароль!"
-                    };
-                }
+                //if (user != null && userJSON.Password == user.Password)
+                //{
+                //    Console.WriteLine("User: " + "\n\tID: " + user.UserId + "\n\tEmail: " + user.Email);
+                //    result = new()
+                //    {
+                //        Message = "Authenticated"
+                //    };
+                //}
+                //else
+                //{
+                //    result = new()
+                //    {
+                //        Message = "Неверный логин или пароль!"
+                //    };
+                //}
 
-                return JsonConvert.SerializeObject(result);
+                //return JsonConvert.SerializeObject(result);
             }
         }
     }

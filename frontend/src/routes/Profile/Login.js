@@ -1,7 +1,9 @@
-import { useState } from "react"
-import useQuery from "../hooks/hook.http"
+import { useEffect, useState } from "react"
+import useQuery from "../../hooks/hook.http"
+import { useNavigate } from "react-router-dom"
 
 export default function Login() {
+    const navigate = useNavigate();
     const [ http, loading, errorState ] = useQuery();
     const [ form, setForm ] = useState({
         Email: "",
@@ -14,16 +16,25 @@ export default function Login() {
             [event.target.name]: event.target.value
         })
     }
+    
+    useEffect(() => {
+        if (errorState) {
+            console.error(errorState)
+            alert(errorState)
+        }
+    },[errorState])
 
     const login = async (event, form) => {
         console.log(form)
         event.preventDefault()
-        const res = await http("/login", "POST", JSON.stringify(form))
-        if (errorState) {            
-            console.error(errorState.message)
-            alert(errorState.message)
-        } else {
-            console.log(res.Message)
+        const res = await http("/login", "POST", JSON.stringify(form), {"Content-Type": "application/json"})
+        if (res) {
+            console.log(res);
+            for (const key in res) {                
+                sessionStorage.setItem(key, res[key]);
+                console.log(`${key}: ${res[key]}`);
+            }
+            navigate("/profile");
         }
     }
 

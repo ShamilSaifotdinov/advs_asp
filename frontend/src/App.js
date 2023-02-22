@@ -3,11 +3,15 @@ import { Routes, Route } from "react-router-dom";
 
 import './App.css';
 
-import Header from "./Header"
-import Main from "./routes/Main"
-import Login from "./routes/Login"
+import Header from "./routes/Header"
+
+import Main from "./routes/MainPage/Main"
+
+import Login from "./routes/Profile/Login"
+import Profile from "./routes/Profile/Profile";
+import NewAdv from "./routes/Profile/NewAdv";
+
 import AdvPage from "./routes/AdvPage"
-import NewAdv from "./routes/NewAdv";
 
 function App() {
     return (     
@@ -18,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />          
           <Route path="/new" element={<NewAdv />} />
           <Route path="/objects/:id" element={<AdvPage />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     );
