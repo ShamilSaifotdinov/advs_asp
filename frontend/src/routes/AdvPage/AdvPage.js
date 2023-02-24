@@ -37,12 +37,17 @@ export default function AdvPage() {
                     ? <h1>Loading...</h1>
                     : error
                         ? console.error(error)
-                        :   <div className="AdvPage_Disc">
+                        : <div className="AdvPage_section">
+                            <div className="AdvPage_Disc">
                                 <h1>{adv.Name}</h1>
                                 <p>{adv.Location}</p>
                                 <p>{adv.Discription}</p>
                                 <h2>{adv.Price.toFixed(2)} руб.</h2>
                             </div>
+                            <div className="AdvPage_creator">
+                                <h2>{adv.Email}</h2>
+                            </div>
+                        </div>
                 }
             </div>
         </div>

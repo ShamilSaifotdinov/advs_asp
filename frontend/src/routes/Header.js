@@ -1,16 +1,19 @@
+import { useNavigate } from "react-router-dom"
+
 export default function Header() {
+    const navigate = useNavigate();
     return (
         <div className="header">
             <div className="wrapper">                
-                <a href="/"><h1>Объекты</h1></a>
+                <button className="header_logo" onClick={() => navigate("/")} ><h1>Объекты</h1></button>
                 {
-                    !sessionStorage.getItem('token')
+                    !localStorage.getItem('token')
                         ? <>
-                            <a className="header_btn" href="/login">Войти</a>
+                            <button className="header_btn" onClick={() => navigate("/login")} >Войти</button>
                         </>
                         : <>
-                            <a className="header_btn" href="/new">Создать объявление</a>
-                            <a className="header_btn" href="/profile">{sessionStorage.getItem('email')}</a>
+                            <button className="header_btn" onClick={() => navigate("/new")} >Создать объявление</button>
+                            <button className="header_btn" onClick={() => navigate("/profile")} >{localStorage.getItem('email')}</button>
                         </>
                 }
             </div>

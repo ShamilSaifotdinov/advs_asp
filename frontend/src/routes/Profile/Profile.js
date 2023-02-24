@@ -5,7 +5,7 @@ import ProfileAdvs from "./ProfileAdvs";
 export default function Profile() {
     const navigate = useNavigate();
     useEffect(() => { 
-        if (!sessionStorage.getItem('token')) {
+        if (!localStorage.getItem('token')) {
             navigate("/")
         }}, [])
 
@@ -38,7 +38,7 @@ export default function Profile() {
     
     const logout = (event) => {        
         event.preventDefault()
-        sessionStorage.clear()
+        localStorage.clear()
         navigate("/");
     }
 
@@ -46,7 +46,7 @@ export default function Profile() {
         <div className="Profile">
             <div className="wrapper">
                 <header className="Profile_header">
-                    <h1>{sessionStorage.getItem('email')}</h1>
+                    <h1>{localStorage.getItem('email')}</h1>
                     <a className="header_btn" onClick={(event) => logout(event)}>Выйти</a>
                 </header>
                 {/* <button className="header_btn" onClick={logout}>Выйти</button> */}

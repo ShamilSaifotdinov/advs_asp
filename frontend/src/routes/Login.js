@@ -31,7 +31,7 @@ export default function Login() {
         if (res) {
             console.log(res);
             for (const key in res) {                
-                sessionStorage.setItem(key, res[key]);
+                localStorage.setItem(key, res[key]);
                 console.log(`${key}: ${res[key]}`);
             }            
             navigate("/profile");

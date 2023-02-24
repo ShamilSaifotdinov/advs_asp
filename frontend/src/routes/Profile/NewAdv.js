@@ -20,7 +20,7 @@ export default function NewAdv() {
         event.preventDefault()
         const res = await http("/advs/new", "POST", JSON.stringify(form), {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')  // передача токена в заголовке
+            "Authorization": "Bearer " + localStorage.getItem('token')  // передача токена в заголовке
         })
         if (errorState) {            
             console.error(errorState.message)

@@ -10,6 +10,8 @@
         public string? Discription { get; set; }
 
         public decimal? Price { get; set; }
+
+        public string Email { get; set; }
     }
 
     public class NewAdvJSON

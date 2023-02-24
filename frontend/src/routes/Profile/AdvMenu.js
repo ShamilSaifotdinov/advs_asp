@@ -7,7 +7,7 @@ function AdvMenu({advId, updateParent}) {
         console.log(advId)
         const res = await http(`/advs/${advId}`, "DELETE", {}, {
             "Accept": "application/json",
-            "Authorization": "Bearer " + sessionStorage.getItem('token')
+            "Authorization": "Bearer " + localStorage.getItem('token')
         })
         if (res) {
             console.log(res);

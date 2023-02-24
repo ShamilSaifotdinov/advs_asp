@@ -43,7 +43,7 @@ export default function ProfileAdvs() {
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
-                    "Authorization": "Bearer " + sessionStorage.getItem('token')  // передача токена в заголовке
+                    "Authorization": "Bearer " + localStorage.getItem('token')  // передача токена в заголовке
                 }
             })
             .then(res => res.json())

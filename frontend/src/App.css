@@ -28,13 +28,23 @@
 .header h1 {
   margin: 0;
 
+  font-weight: bold;
   color: brown;
+  font-size: 2em;
+}
+
+.header_logo {
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .header_btn {
   padding-inline: 1rem;
   padding-block: 0.5rem;
-  background-color: rgb(0, 3, 192);
+
+  background-color: rgb(0, 3, 192);  
+  border: none;
   border-radius: 0.5rem;
 
   text-decoration: none;
@@ -120,6 +130,11 @@
 .advMenu {  
   display: flex;
   flex-direction: column;
+}
+
+.AdvPage_section {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* .App {

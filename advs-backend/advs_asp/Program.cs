@@ -42,7 +42,14 @@ app.Use(async (context, next) =>
 {
     await next.Invoke();
 
-    Console.WriteLine(context.Response.StatusCode);
+    string[] values =
+    {
+        $"[{DateTime.Now}]",
+        context.Connection.RemoteIpAddress.ToString()+':'+context.Connection.RemotePort,
+        context.Response.StatusCode.ToString(),
+        context.Request.Path
+    };
+    Console.WriteLine(String.Join(" ", values));
 
     if (context.Response.StatusCode == 404)
         await context.Response.WriteAsJsonAsync(new { message = "—траница отсутствует" });
@@ -123,6 +130,7 @@ app.MapPost("/login", async (context) =>
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
+        Response.StatusCode = 422;
         await Response.WriteAsJsonAsync(new { message = ex.Message });
         return;
     }
@@ -194,44 +202,6 @@ app.MapPost("/login", async (context) =>
         await Response.WriteAsJsonAsync(response);
     }    
 });
-
-/*
-app.MapPost("/login", async (context) =>
-{
-    var Request = context.Request;
-    var Response = context.Response;
-
-    string bodyStr = await BodyToString(Request);
-    User result = Database.Login(bodyStr);
-
-    if (result is null)
-    {
-        //Results.Unauthorized();
-        Response.StatusCode = 401;
-        await context.Response.WriteAsJsonAsync(new { message = "Ќеверный логин или пароль!" });
-        return;
-    }
-    Console.WriteLine(result.Email + " " + result.UserId);
-
-    //производитс€ установка аутентификационных кук, которые будут примен€тьс€ дл€ определени€ клиента и его прав в приложении:
-    //Claim - грубо говор€ набор данных, которые описывают пользовател€. аждый такой claim принимает тип и значение.
-    var claims = new List<Claim> { new Claim(ClaimTypes.Name, result.Email) };
-
-    // создаетс€ объект ClaimsIdentity, который нужен дл€ инициализации ClaimsPrincipal.
-    // ¬ ClaimsIdentity передаетс€ ранее созданный список claims и тип аутентификации, в данном случае "Cookies"
-    ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-    // установка аутентификационных куки
-    context.User = new ClaimsPrincipal(claimsIdentity);
-
-    //var bytes = Encoding.UTF8.GetBytes(result.ToString());
-    //await Response.Body.WriteAsync(bytes, 0, bytes.Length);
-
-    await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-    //await Response.WriteAsJsonAsync(new { ID = result.UserId });
-});
-
-*/
-
 app.Map("/profile", [Authorize] (HttpContext context) => 
 {
     var userId = context.User.FindFirst("Id").Value;

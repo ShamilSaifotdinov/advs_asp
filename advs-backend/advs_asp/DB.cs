@@ -35,13 +35,18 @@ namespace advs_backend
                 var adv = (from Advs in db.Advs
                            where Advs.AdvId == ID
                            select Advs).First();
+                var creator = (from User in db.Users
+                               where User.UserId == adv.UserId
+                               select User.Email).First();
+                Console.WriteLine(creator);
                 AdvJSON advJSON = new()
                 {
                     ID = adv.AdvId,
                     Name = adv.Name,
                     Location = adv.Location,
                     Discription = adv.Discription,
-                    Price = adv.Price
+                    Price = adv.Price,
+                    Email = creator
                 };
                 return JsonConvert.SerializeObject(advJSON);
             }
