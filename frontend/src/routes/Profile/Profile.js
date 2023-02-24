@@ -45,8 +45,10 @@ export default function Profile() {
     return (
         <div className="Profile">
             <div className="wrapper">
-                <h1>{sessionStorage.getItem('email')}</h1>
-                <a className="header_btn" onClick={(event) => logout(event)}>Выйти</a>
+                <header className="Profile_header">
+                    <h1>{sessionStorage.getItem('email')}</h1>
+                    <a className="header_btn" onClick={(event) => logout(event)}>Выйти</a>
+                </header>
                 {/* <button className="header_btn" onClick={logout}>Выйти</button> */}
                 { <ProfileAdvs /> }
             </div>

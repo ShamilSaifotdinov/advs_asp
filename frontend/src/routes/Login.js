@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import useQuery from "../../hooks/hook.http"
+import useQuery from "../hooks/hook.http"
 import { useNavigate } from "react-router-dom"
 
 export default function Login() {
@@ -33,7 +33,7 @@ export default function Login() {
             for (const key in res) {                
                 sessionStorage.setItem(key, res[key]);
                 console.log(`${key}: ${res[key]}`);
-            }
+            }            
             navigate("/profile");
         }
     }

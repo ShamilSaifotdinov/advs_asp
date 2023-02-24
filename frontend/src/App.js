@@ -7,11 +7,11 @@ import Header from "./routes/Header"
 
 import Main from "./routes/MainPage/Main"
 
-import Login from "./routes/Profile/Login"
+import Login from "./routes/Login"
 import Profile from "./routes/Profile/Profile";
 import NewAdv from "./routes/Profile/NewAdv";
 
-import AdvPage from "./routes/AdvPage"
+import AdvPage from "./routes/AdvPage/AdvPage"
 
 function App() {
     return (     

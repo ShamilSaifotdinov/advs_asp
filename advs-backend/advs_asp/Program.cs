@@ -49,12 +49,38 @@ app.Use(async (context, next) =>
 });
 
 //app.UseMiddleware<CORS_Middleware>();
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader());
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.Map("/advs/{id:int}", (int id) => Database.GetAdv(id));
+app.MapDelete("/advs/{id:int}", [Authorize] (HttpContext context, int id) =>
+{
+    var Request = context.Request;
+
+    Console.WriteLine(context.User.FindFirst("Id").Value);
+    int userId = Int32.Parse(context.User.FindFirst("Id").Value);
+
+    using (AdvsContext db = new())
+    {
+        var adv = (from Advs in db.Advs
+                   where Advs.AdvId == id
+                   select Advs).First();
+        if (adv is not null && adv.UserId == userId)
+        {
+            db.Advs.Remove(adv);
+            db.SaveChanges();
+
+            return new { message = "Объект удален!" };
+        }
+        else
+        {
+
+            return new { message = "Объект не доступен!" };
+        }
+    }
+});
 app.MapPost("/advs/new", [Authorize] async (HttpContext context) =>
 {
     var Request = context.Request;

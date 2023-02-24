@@ -4,7 +4,7 @@
   height: 100%;
 }
 
-.wrapper{
+.wrapper {
   max-width: 1170px;
   margin-left: auto;
   margin-right: auto;
@@ -82,6 +82,9 @@
 }
 
 .adv {
+  display: flex;  
+  justify-content: space-between;
+  
   border-radius: 1rem;
   padding: 1rem;
 }
@@ -108,7 +111,16 @@
   height: 120px;
 }
 
+.Profile_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.advMenu {  
+  display: flex;
+  flex-direction: column;
+}
 
 /* .App {
   text-align: center;

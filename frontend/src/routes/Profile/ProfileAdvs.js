@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import Adv from "../Adv"
+import AdvContain from "../AdvContain";
+import AdvMenu from "./AdvMenu";
 
 export default function ProfileAdvs() {
     const [error, setError] = useState(null);
@@ -58,7 +60,7 @@ export default function ProfileAdvs() {
                     setError(error);
                 }
             )
-    }, [])
+    }, [loading])
     
 
     return (
@@ -68,7 +70,11 @@ export default function ProfileAdvs() {
                     ? <h1>Loading...</h1>
                     : error
                         ? console.error(error)
-                        : advs.map(adv => <Adv key={adv.advId} {...adv} />)
+                        : advs.map(adv => 
+                            <Adv key={adv.advId}>
+                                <AdvContain {...adv} />
+                                <AdvMenu advId={adv.advId} updateParent={() => setLoading(true)} />
+                            </Adv>)
             }
         </div>
 
