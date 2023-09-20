@@ -18,6 +18,10 @@ export default function useQuery() {
             }
             else {
                 response = await fetch(`http://${window.location.hostname}:8080${url}`, { method, body, headers })
+            }            
+            if (response.status === 401) {
+                localStorage.clear()
+                throw new Error("Необходимо авторизоваться!")
             }
             const data = await response.json()
             console.log(data)

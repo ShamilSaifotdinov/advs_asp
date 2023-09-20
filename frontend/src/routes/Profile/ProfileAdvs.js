@@ -1,41 +1,45 @@
 import { useEffect, useState } from "react"
+// import useQuery from "../../hooks/hook.http";
 import Adv from "../Adv"
 import AdvContain from "../AdvContain";
 import AdvMenu from "./AdvMenu";
 
 export default function ProfileAdvs() {
+    /*
+    const http = useQuery()
+    
+    useEffect(() => {
+            if (errorState) {
+                console.error(errorState)
+                alert(errorState)
+            }
+        }, [errorState])
+    
+    useEffect(() => {
+            var res;
+            async function fetchData() {
+                res = await http(
+                    "/profile", 
+                    'GET',
+                    {}, 
+                    {
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem('token')  // передача токена в заголовке
+                    }
+                )
+            }
+
+            fetchData();
+            
+            if (res) {
+                console.log(res);
+                setAdvs(res);
+            }
+        }, [])
+        */
+    const [ advs, setAdvs ] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [ advs, setAdvs ] = useState({});
-  /*
-  useEffect(() => {
-        if (errorState) {
-            console.error(errorState)
-            alert(errorState)
-        }
-    }, [errorState])
-  useEffect(() => {
-        var res;
-        async function fetchData() {
-            res = await http(
-                "/profile", 
-                'GET',
-                {}, 
-                {
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + sessionStorage.getItem('token')  // передача токена в заголовке
-                }
-            )
-        }
-
-        fetchData();
-        
-        if (res) {
-            console.log(res);
-            setAdvs(res);
-        }
-    }, [])
-    */
     
     useEffect(() => {
         fetch(`http://${window.location.hostname}:8080/profile`,
@@ -46,7 +50,13 @@ export default function ProfileAdvs() {
                     "Authorization": "Bearer " + localStorage.getItem('token')  // передача токена в заголовке
                 }
             })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401) {
+                    localStorage.clear()
+                    throw new Error("Необходимо авторизоваться!")
+                }
+                return res.json()
+            })
             .then(
                 (result) => {
                     setLoading(false);
@@ -58,11 +68,11 @@ export default function ProfileAdvs() {
                 (error) => {
                     setLoading(false);
                     setError(error);
+                    alert(error);
                 }
             )
     }, [loading])
     
-
     return (
         <div className="ProfileAdvs">
             {
